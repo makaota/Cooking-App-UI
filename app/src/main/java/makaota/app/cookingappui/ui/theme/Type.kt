@@ -34,7 +34,7 @@ val Typography = Typography(
     h1 = TextStyle(
         color = Color.Black,
         fontFamily = montserrat,
-        fontWeight = FontWeight.ExtraBold,
+        fontWeight = FontWeight.Bold,
         fontSize = 25.sp
     ),
     h2 = TextStyle(
@@ -46,7 +46,7 @@ val Typography = Typography(
     h3 = TextStyle(
         color = Color.Gray,
         fontFamily = montserrat,
-        fontWeight = FontWeight.SemiBold,
-        fontSize = 20.sp
+        fontWeight = FontWeight.Bold,
+        fontSize = 21.sp
     )
 )
