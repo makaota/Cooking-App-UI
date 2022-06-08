@@ -6,8 +6,10 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -16,10 +18,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import java.time.LocalDate
@@ -38,14 +42,15 @@ fun HomeScreen() {
         Column {
             GreetingSection()
             //ProfileImage(
-              //  painter = painter,
-                //contentDescriptor = contentDescriptor)
+            //  painter = painter,
+            //contentDescriptor = contentDescriptor)
         }
     }
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
+@Preview
 fun GreetingSection(
     name: String = "Makaota"
 ) {
@@ -73,10 +78,11 @@ fun GreetingSection(
 
         }
 
-        val painter = painterResource(id = R.drawable.makaota_profile_img) // profile image
-        val contentDescriptor = "image"// content Description
+            val painter = painterResource(id = R.drawable.makaota_profile_img) // profile image
+            val contentDescriptor = "image"// content Description
 
-        ProfileImage(painter = painter, contentDescriptor = contentDescriptor)
+            ProfileImage(painter = painter, contentDescriptor = contentDescriptor)
+
 
     }
 }
@@ -85,19 +91,32 @@ fun GreetingSection(
 fun ProfileImage(
     painter: Painter,
     contentDescriptor: String,
-    modifier: Modifier = Modifier
-) {
+    modifier: Modifier = Modifier)
 
-    Card(
-        modifier.size(75.dp),
-        shape = RoundedCornerShape(15.dp),
-        elevation = 5.dp
-    ) {
-        Image(
+{
+        Card(
+            modifier.size(75.dp),
+            shape = RoundedCornerShape(15.dp),
+            elevation = 5.dp
+        )
+
+        {
+            Image(
                 painter = painter,
                 contentDescription = contentDescriptor,
                 contentScale = ContentScale.Crop
             )
-    }
+//            Row(modifier = modifier.padding(top = 2.dp, start = 50.dp)) {
+//                Image(
+//                    painter = painterResource(R.drawable.ic_red_circle),
+//                    contentDescription = "",
+//                    modifier = modifier
+//                        .size(20.dp)
+//
+//                )
+//            }
+        }
+
+
 
 }
