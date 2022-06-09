@@ -26,9 +26,9 @@ val montserrat = FontFamily(
 // Set of Material typography styles to start with
 val Typography = Typography(
     body1 = TextStyle(
-        color = Color.Black,
+        color = Color.Magenta,
         fontFamily = montserrat,
-        fontWeight = FontWeight.Thin,
+        fontWeight = FontWeight.Normal,
         fontSize = 14.sp
     ),
     h1 = TextStyle(
@@ -38,9 +38,9 @@ val Typography = Typography(
         fontSize = 25.sp
     ),
     h2 = TextStyle(
-        color = Color.White,
+        color = Color.Black,
         fontFamily = montserrat,
-        fontWeight = FontWeight.ExtraBold,
+        fontWeight = FontWeight.Bold,
         fontSize = 20.sp
     ),
     h3 = TextStyle(

@@ -3,9 +3,13 @@ package makaota.app.cookingappui
 import android.os.Build
 import android.os.ParcelFileDescriptor
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.GridCells
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -37,6 +41,16 @@ fun HomeScreen() {
         Column {
             GreetingSection()
             SearchTextField()
+            ChefSection(
+                chefImages = listOf(
+                    ChefImage(name = "Tom", R.drawable.leonardo, "Leonardo"),
+                    ChefImage(name = "Tom", R.drawable.leonardo, "Leonardo"),
+                    ChefImage(name = "Tom", R.drawable.leonardo, "Leonardo"),
+                    ChefImage(name = "Tom", R.drawable.leonardo, "Leonardo"),
+                    ChefImage(name = "Tom", R.drawable.leonardo, "Leonardo"),
+                    ChefImage(name = "Tom", R.drawable.leonardo, "Leonardo")
+                )
+            )
         }
 
 
@@ -94,16 +108,16 @@ fun ProfileImage(
         elevation = 5.dp
     ) {
         Image(
-                painter = painter,
-                contentDescription = contentDescriptor,
-                contentScale = ContentScale.Crop
-            )
+            painter = painter,
+            contentDescription = contentDescriptor,
+            contentScale = ContentScale.Crop
+        )
     }
 
 }
 
 @Composable
-fun SearchTextField(){
+fun SearchTextField() {
 
     val textFieldState = remember {
         mutableStateOf("")
@@ -126,7 +140,8 @@ fun SearchTextField(){
         leadingIcon = {
             Icon(
                 painter = painterResource(id = R.drawable.ic_search),
-                contentDescription = "search" )
+                contentDescription = "search"
+            )
         },
         textStyle = MaterialTheme.typography.h3,
         enabled = true,
@@ -135,4 +150,88 @@ fun SearchTextField(){
         maxLines = 1,
         shape = RoundedCornerShape(25.dp)
     )
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun ChefSection(chefImages: List<ChefImage>) {
+
+    val title: String = "Best Chef"
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(15.dp)
+    ) {
+        Column(
+            verticalArrangement = Arrangement.Center
+        ) {
+
+            Text(
+                text = "$title",
+                style = MaterialTheme.typography.h1
+            )
+
+        }
+
+        Text(
+            text = "See all",
+            style = MaterialTheme.typography.body1
+        )
+
+    }
+    Row(
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(15.dp)
+    ) {
+
+        Column(verticalArrangement = Arrangement.SpaceBetween) {
+            LazyRow(
+                //  cells = GridCells.Fixed(1),
+                contentPadding = PaddingValues(start = 7.5.dp, end = 7.5.dp, bottom = 100.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                items(chefImages.size) {
+                    ChefItem(chefImage = chefImages[it])
+                    Spacer(modifier = Modifier.width(15.dp))
+
+                }
+            }
+        }
+    }
+
+}
+
+
+@Composable
+fun ChefItem(
+    chefImage: ChefImage
+) {
+    Box(modifier = Modifier.fillMaxHeight()) {
+        Card(
+            Modifier.size(75.dp),
+            shape = RoundedCornerShape(15.dp),
+            elevation = 5.dp
+        ) {
+            Image(
+                painter = painterResource(id = chefImage.image),
+                contentDescription = chefImage.description
+            )
+
+        }
+
+        Text(
+            text = chefImage.name,
+            style = MaterialTheme.typography.h3,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .height(220.dp)
+        )
+
+    }
+
 }
