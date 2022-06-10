@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -12,6 +13,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
@@ -26,9 +28,9 @@ import java.time.LocalDate
 fun HomeScreen() {
 
 
-    Box(
+    BoxWithConstraints(
         modifier = Modifier
-            .background(color = Color(0xFAF0E6))// linen
+            .background(color = Color((0xE9DCC9)))// linen
             .fillMaxSize()
     ) {
         Column {
@@ -56,7 +58,17 @@ fun HomeScreen() {
                     )
                 )
             )
+
+
         }
+        BottomMenu(
+            item = listOf(
+                BottomMenuContent("", R.drawable.ic_home),
+                BottomMenuContent("", R.drawable.ic_chart),
+                BottomMenuContent("", R.drawable.ic_favorite),
+                BottomMenuContent("", R.drawable.ic_person)
+            ), modifier = Modifier.align(Alignment.BottomCenter)
+        )
 
 
     }
@@ -131,7 +143,7 @@ fun SearchTextField() {
     OutlinedTextField(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(30.dp),
+            .padding(10.dp),
         value = textFieldState.value,
         onValueChange = {
             textFieldState.value = it
@@ -166,7 +178,7 @@ fun JustForYouSection(recipesImages: List<JustForYou>) {
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(15.dp)
+            .padding(10.dp)
     ) {
         Column(verticalArrangement = Arrangement.Center)
         {
@@ -183,28 +195,35 @@ fun JustForYouSection(recipesImages: List<JustForYou>) {
         )
     }
 
-    Row(
-        horizontalArrangement = Arrangement.SpaceEvenly,
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(15.dp)
-    ) {
+    BoxWithConstraints(
+       //  Modifier.MaxHeight()
+    )
+    {
+        Row(
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp)
+        )
+        {
 
-        Column(verticalArrangement = Arrangement.SpaceBetween) {
-            LazyRow(
-                //  cells = GridCells.Fixed(1),
-                contentPadding = PaddingValues(start = 7.5.dp, end = 7.5.dp),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                items(recipesImages.size) {
-                    JustForYouImageItem(justForYou = recipesImages[it])
-                    Spacer(modifier = Modifier.width(15.dp))
+            Column(verticalArrangement = Arrangement.SpaceBetween) {
+                LazyRow(
+                    //  cells = GridCells.Fixed(1),
+                    contentPadding = PaddingValues(start = 7.5.dp, end = 7.5.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    items(recipesImages.size) {
+                        JustForYouImageItem(justForYou = recipesImages[it])
+                        Spacer(modifier = Modifier.width(15.dp))
 
+                    }
                 }
             }
         }
     }
+
 }
 
 
@@ -218,7 +237,7 @@ fun ChefSection(chefImages: List<ChefImage>) {
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(15.dp)
+            .padding(10.dp)
     ) {
         Column(
             verticalArrangement = Arrangement.Center
@@ -242,7 +261,7 @@ fun ChefSection(chefImages: List<ChefImage>) {
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(15.dp)
+            .padding(5.dp)
     ) {
 
         Column(verticalArrangement = Arrangement.SpaceBetween) {
@@ -268,7 +287,7 @@ fun JustForYouImageItem(justForYou: JustForYou) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(200.dp)
+          //  .fillMaxSize()
     ) {
         Card(
             Modifier.size(200.dp),
@@ -301,10 +320,10 @@ fun ChefItem(chefImage: ChefImage) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(100.dp)
+            .height(110.dp)
     ) {
         Card(
-            Modifier.size(75.dp),
+            Modifier.size(80.dp),
             shape = RoundedCornerShape(15.dp),
             elevation = 5.dp
         ) {
@@ -323,6 +342,86 @@ fun ChefItem(chefImage: ChefImage) {
 
         )
 
+    }
+
+}
+
+
+@Composable
+fun BottomMenu(
+
+    item: List<BottomMenuContent>,
+    modifier: Modifier = Modifier,
+    // activeHighLightColor: Color = ButtonBlue,
+    activeTextColor: Color = Color.White,
+    //  inactiveTextColor: Color = AquaBlue,
+    initialSelectedItemIndex: Int = 0
+
+) {
+
+    var selectedItemIndex by remember {
+        mutableStateOf(initialSelectedItemIndex)
+    }
+    Row(
+        horizontalArrangement = Arrangement.SpaceAround,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+            .fillMaxWidth()
+        //.fillMaxHeight()
+        //   .background(DeepBlue)
+        //.padding(15.dp)
+    ) {
+        item.forEachIndexed { index, item ->
+            BottomMenuItem(
+                item = item,
+                isSelected = index == selectedItemIndex,
+                //      activeHighLightColor = activeHighLightColor,
+                //      activeTextColor = activeTextColor,
+                //      inactiveTextColor = inactiveTextColor
+            ) {
+                selectedItemIndex = index
+            }
+        }
+    }
+}
+
+
+@Composable
+fun BottomMenuItem(
+    item: BottomMenuContent,
+    isSelected: Boolean = false,
+    //  activeHighLightColor: Color = ButtonBlue,
+    //   activeTextColor: Color = Color.White,
+    //  inactiveTextColor: Color = AquaBlue,
+    onItemClick: () -> Unit
+) {
+
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier.clickable {
+            onItemClick()
+        }
+    ) {
+
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .clip(RoundedCornerShape(10.dp))
+            //  .background(if (isSelected) activeHighLightColor else Color.Transparent)
+            // .padding(15.dp)
+        ) {
+            Icon(
+                painter = painterResource(id = item.image),
+                contentDescription = item.title,
+                //  tint = if (isSelected) activeTextColor else inactiveTextColor,
+                modifier = Modifier.size(30.dp)
+            )
+        }
+        Text(
+            text = item.title,
+            // color = if (isSelected) activeTextColor else inactiveTextColor
+        )
     }
 
 }
