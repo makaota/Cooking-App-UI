@@ -1,32 +1,25 @@
 package makaota.app.cookingappui
 
 import android.os.Build
-import android.os.ParcelFileDescriptor
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import java.time.LocalDate
-import kotlin.math.round
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -49,6 +42,18 @@ fun HomeScreen() {
                     ChefImage(name = "Tom", R.drawable.leonardo, "Leonardo"),
                     ChefImage(name = "Tom", R.drawable.leonardo, "Leonardo"),
                     ChefImage(name = "Tom", R.drawable.leonardo, "Leonardo")
+                )
+            )
+            JustForYouSection(
+                recipesImages = listOf(
+                    JustForYou(
+                        name = "Quick and Easy Braai Broodjies",
+                        R.drawable.quick_and_easy_braaibroodjies
+                    ),
+                    JustForYou(
+                        name = "Lamp Chops with Peach Caprese Salad",
+                        R.drawable.lamp_chops_with_peach_caprese_salad
+                    )
                 )
             )
         }
@@ -152,6 +157,57 @@ fun SearchTextField() {
     )
 }
 
+@Composable
+fun JustForYouSection(recipesImages: List<JustForYou>) {
+    val title = "Just For You"
+
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(15.dp)
+    ) {
+        Column(verticalArrangement = Arrangement.Center)
+        {
+
+            Text(
+                text = title,
+                style = MaterialTheme.typography.h1
+            )
+
+        }
+        Text(
+            text = "See all",
+            style = MaterialTheme.typography.body1
+        )
+    }
+
+    Row(
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(15.dp)
+    ) {
+
+        Column(verticalArrangement = Arrangement.SpaceBetween) {
+            LazyRow(
+                //  cells = GridCells.Fixed(1),
+                contentPadding = PaddingValues(start = 7.5.dp, end = 7.5.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                items(recipesImages.size) {
+                    JustForYouImageItem(justForYou = recipesImages[it])
+                    Spacer(modifier = Modifier.width(15.dp))
+
+                }
+            }
+        }
+    }
+}
+
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ChefSection(chefImages: List<ChefImage>) {
@@ -192,7 +248,7 @@ fun ChefSection(chefImages: List<ChefImage>) {
         Column(verticalArrangement = Arrangement.SpaceBetween) {
             LazyRow(
                 //  cells = GridCells.Fixed(1),
-                contentPadding = PaddingValues(start = 7.5.dp, end = 7.5.dp, bottom = 100.dp),
+                contentPadding = PaddingValues(start = 7.5.dp, end = 7.5.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 items(chefImages.size) {
@@ -206,12 +262,47 @@ fun ChefSection(chefImages: List<ChefImage>) {
 
 }
 
+@Composable
+fun JustForYouImageItem(justForYou: JustForYou) {
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(200.dp)
+    ) {
+        Card(
+            Modifier.size(200.dp),
+            shape = RoundedCornerShape(15.dp),
+            elevation = 5.dp
+        ) {
+            Image(
+                painter = painterResource(id = justForYou.image),
+                contentDescription = "",
+                contentScale = ContentScale.Crop
+            )
+            Text(
+                text = justForYou.name,
+                style = MaterialTheme.typography.h3,
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+
+            )
+        }
+
+
+    }
+
+}
+
 
 @Composable
-fun ChefItem(
-    chefImage: ChefImage
-) {
-    Box(modifier = Modifier.fillMaxHeight()) {
+fun ChefItem(chefImage: ChefImage) {
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(100.dp)
+    ) {
         Card(
             Modifier.size(75.dp),
             shape = RoundedCornerShape(15.dp),
@@ -229,9 +320,11 @@ fun ChefItem(
             style = MaterialTheme.typography.h3,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .height(220.dp)
+
         )
 
     }
 
 }
+
+
