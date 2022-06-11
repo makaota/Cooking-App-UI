@@ -35,18 +35,24 @@ val Typography = Typography(
         color = Color.Black,
         fontFamily = montserrat,
         fontWeight = FontWeight.Bold,
-        fontSize = 25.sp
+        fontSize = 22.sp
     ),
     h2 = TextStyle(
         color = Color.Black,
         fontFamily = montserrat,
-        fontWeight = FontWeight.Bold,
-        fontSize = 20.sp
+        fontWeight = FontWeight.Normal,
+        fontSize = 16.sp
     ),
     h3 = TextStyle(
         color = Color.Gray,
         fontFamily = montserrat,
         fontWeight = FontWeight.Bold,
-        fontSize = 21.sp
+        fontSize = 18.sp
+    ),
+    h4 = TextStyle(
+        color = Color.White,
+        fontFamily = montserrat,
+        fontWeight = FontWeight.ExtraBold,
+        fontSize = 18.sp
     )
 )

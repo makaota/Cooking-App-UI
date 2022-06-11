@@ -14,13 +14,20 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Green
+import androidx.compose.ui.graphics.Color.Companion.Magenta
+import androidx.compose.ui.graphics.Color.Companion.Yellow
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import makaota.app.cookingappui.ui.theme.*
 import java.time.LocalDate
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -38,12 +45,13 @@ fun HomeScreen() {
             SearchTextField()
             ChefSection(
                 chefImages = listOf(
-                    ChefImage(name = "Tom", R.drawable.leonardo, "Leonardo"),
-                    ChefImage(name = "Tom", R.drawable.leonardo, "Leonardo"),
-                    ChefImage(name = "Tom", R.drawable.leonardo, "Leonardo"),
-                    ChefImage(name = "Tom", R.drawable.leonardo, "Leonardo"),
-                    ChefImage(name = "Tom", R.drawable.leonardo, "Leonardo"),
-                    ChefImage(name = "Tom", R.drawable.leonardo, "Leonardo")
+                    ChefImage(
+                        name = "Leonardo", R.drawable.leonardo, ""
+                    ),
+                    ChefImage(name = "Nomzamo", R.drawable.nomzamo, ""),
+                    ChefImage(name = "Bristol", R.drawable.bristol, ""),
+                    ChefImage(name = "Pravan", R.drawable.pravan, ""),
+                    ChefImage(name = "Putin", R.drawable.putin, "")
                 )
             )
             JustForYouSection(
@@ -58,8 +66,6 @@ fun HomeScreen() {
                     )
                 )
             )
-
-
         }
         BottomMenu(
             item = listOf(
@@ -148,82 +154,27 @@ fun SearchTextField() {
         onValueChange = {
             textFieldState.value = it
         },
+
         placeholder = {
             Text(
                 text = "Sate, Nasi Goreng",
-                style = MaterialTheme.typography.h3
+                style = MaterialTheme.typography.h3,
             )
         },
         leadingIcon = {
             Icon(
                 painter = painterResource(id = R.drawable.ic_search),
-                contentDescription = "search"
+                contentDescription = "search",
             )
         },
         textStyle = MaterialTheme.typography.h3,
-        enabled = true,
-        singleLine = true,
-        readOnly = false,
-        maxLines = 1,
+
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            focusedBorderColor = Magenta,
+            unfocusedBorderColor = Color((0xE9DCC9))// linen
+        ),
         shape = RoundedCornerShape(25.dp)
     )
-}
-
-@Composable
-fun JustForYouSection(recipesImages: List<JustForYou>) {
-    val title = "Just For You"
-
-    Row(
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(10.dp)
-    ) {
-        Column(verticalArrangement = Arrangement.Center)
-        {
-
-            Text(
-                text = title,
-                style = MaterialTheme.typography.h1
-            )
-
-        }
-        Text(
-            text = "See all",
-            style = MaterialTheme.typography.body1
-        )
-    }
-
-    BoxWithConstraints(
-       //  Modifier.MaxHeight()
-    )
-    {
-        Row(
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp)
-        )
-        {
-
-            Column(verticalArrangement = Arrangement.SpaceBetween) {
-                LazyRow(
-                    //  cells = GridCells.Fixed(1),
-                    contentPadding = PaddingValues(start = 7.5.dp, end = 7.5.dp),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    items(recipesImages.size) {
-                        JustForYouImageItem(justForYou = recipesImages[it])
-                        Spacer(modifier = Modifier.width(15.dp))
-
-                    }
-                }
-            }
-        }
-    }
-
 }
 
 
@@ -252,7 +203,8 @@ fun ChefSection(chefImages: List<ChefImage>) {
 
         Text(
             text = "See all",
-            style = MaterialTheme.typography.body1
+            style = MaterialTheme.typography.body1,
+            textDecoration = TextDecoration.Underline
         )
 
     }
@@ -282,39 +234,6 @@ fun ChefSection(chefImages: List<ChefImage>) {
 }
 
 @Composable
-fun JustForYouImageItem(justForYou: JustForYou) {
-
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-          //  .fillMaxSize()
-    ) {
-        Card(
-            Modifier.size(200.dp),
-            shape = RoundedCornerShape(15.dp),
-            elevation = 5.dp
-        ) {
-            Image(
-                painter = painterResource(id = justForYou.image),
-                contentDescription = "",
-                contentScale = ContentScale.Crop
-            )
-            Text(
-                text = justForYou.name,
-                style = MaterialTheme.typography.h3,
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-
-            )
-        }
-
-
-    }
-
-}
-
-
-@Composable
 fun ChefItem(chefImage: ChefImage) {
 
     Box(
@@ -336,11 +255,116 @@ fun ChefItem(chefImage: ChefImage) {
 
         Text(
             text = chefImage.name,
-            style = MaterialTheme.typography.h3,
+            style = MaterialTheme.typography.h2,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
 
         )
+
+    }
+
+}
+
+
+@Composable
+fun JustForYouSection(recipesImages: List<JustForYou>) {
+    val title = "Just For You"
+
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(10.dp)
+    ) {
+        Column(verticalArrangement = Arrangement.Center)
+        {
+
+            Text(
+                text = title,
+                style = MaterialTheme.typography.h1
+            )
+
+        }
+        Text(
+            text = "See all",
+            style = MaterialTheme.typography.body1,
+            textDecoration = TextDecoration.Underline
+        )
+    }
+
+    BoxWithConstraints(
+        //  Modifier.MaxHeight()
+    )
+    {
+        Row(
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp)
+        )
+        {
+
+            Column(verticalArrangement = Arrangement.SpaceBetween) {
+                LazyRow(
+                    //  cells = GridCells.Fixed(1),
+                    contentPadding = PaddingValues(start = 7.5.dp, end = 7.5.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    items(recipesImages.size) {
+                        JustForYouImageItem(justForYou = recipesImages[it])
+                        Spacer(modifier = Modifier.width(15.dp))
+
+                    }
+                }
+            }
+        }
+    }
+
+}
+
+@Composable
+fun JustForYouImageItem(justForYou: JustForYou) {
+
+    Box(
+        modifier = Modifier
+            .fillMaxHeight()
+        // .height(50.dp)
+    ) {
+        Card(
+            Modifier.size(200.dp),
+            shape = RoundedCornerShape(15.dp),
+            elevation = 5.dp
+        ) {
+            Image(
+                painter = painterResource(id = justForYou.image),
+                contentDescription = "",
+                contentScale = ContentScale.Crop
+            )
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        Brush.verticalGradient(
+                            colors = listOf(
+                                Color.Transparent,
+                                Color.Black
+                            )
+                        )
+                    )
+            )
+
+            Box(contentAlignment = Alignment.Center) {
+                Text(
+                    text = justForYou.name,
+                    style = MaterialTheme.typography.h4,
+                    textAlign = TextAlign.Center
+
+                )
+            }
+        }
+
 
     }
 
@@ -390,9 +414,9 @@ fun BottomMenu(
 fun BottomMenuItem(
     item: BottomMenuContent,
     isSelected: Boolean = false,
-    //  activeHighLightColor: Color = ButtonBlue,
-    //   activeTextColor: Color = Color.White,
-    //  inactiveTextColor: Color = AquaBlue,
+    activeHighLightColor: Color = Color.Magenta,
+    activeTextColor: Color = Color.White,
+    inactiveTextColor: Color = AquaBlue,
     onItemClick: () -> Unit
 ) {
 
@@ -408,19 +432,18 @@ fun BottomMenuItem(
             contentAlignment = Alignment.Center,
             modifier = Modifier
                 .clip(RoundedCornerShape(10.dp))
-            //  .background(if (isSelected) activeHighLightColor else Color.Transparent)
-            // .padding(15.dp)
+                .background(if (isSelected) activeHighLightColor else Color.Transparent)
         ) {
             Icon(
                 painter = painterResource(id = item.image),
                 contentDescription = item.title,
-                //  tint = if (isSelected) activeTextColor else inactiveTextColor,
-                modifier = Modifier.size(30.dp)
+                tint = if (isSelected) activeTextColor else inactiveTextColor,
+                modifier = Modifier.size(27.dp)
             )
         }
         Text(
             text = item.title,
-            // color = if (isSelected) activeTextColor else inactiveTextColor
+            color = if (isSelected) activeTextColor else inactiveTextColor
         )
     }
 
