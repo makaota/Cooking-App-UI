@@ -2,10 +2,7 @@ package makaota.app.cookingappui
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -21,6 +18,7 @@ import androidx.compose.ui.graphics.Color.Companion.Magenta
 import androidx.compose.ui.graphics.Color.Companion.Yellow
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
@@ -58,11 +56,13 @@ fun HomeScreen() {
                 recipesImages = listOf(
                     JustForYou(
                         name = "Quick and Easy Braai Broodjies",
-                        R.drawable.quick_and_easy_braaibroodjies
+                        R.drawable.quick_and_easy_braaibroodjies,
+                        "Chef Nomzamo"
                     ),
                     JustForYou(
                         name = "Lamp Chops with Peach Caprese Salad",
-                        R.drawable.lamp_chops_with_peach_caprese_salad
+                        R.drawable.lamp_chops_with_peach_caprese_salad,
+                        "Chef Pravan"
                     )
                 )
             )
@@ -330,7 +330,7 @@ fun JustForYouImageItem(justForYou: JustForYou) {
     Box(
         modifier = Modifier
             .fillMaxHeight()
-        // .height(50.dp)
+
     ) {
         Card(
             Modifier.size(200.dp),
@@ -363,6 +363,17 @@ fun JustForYouImageItem(justForYou: JustForYou) {
 
                 )
             }
+
+
+            Box(contentAlignment = Alignment.BottomCenter,
+            modifier = Modifier.padding(bottom = 20.dp)) {
+                Text(
+                    text = justForYou.chefName,
+                    style = MaterialTheme.typography.h5,
+                    textAlign = TextAlign.Center
+
+                )
+            }
         }
 
 
@@ -376,9 +387,7 @@ fun BottomMenu(
 
     item: List<BottomMenuContent>,
     modifier: Modifier = Modifier,
-    // activeHighLightColor: Color = ButtonBlue,
-    activeTextColor: Color = Color.White,
-    //  inactiveTextColor: Color = AquaBlue,
+
     initialSelectedItemIndex: Int = 0
 
 ) {
@@ -386,22 +395,19 @@ fun BottomMenu(
     var selectedItemIndex by remember {
         mutableStateOf(initialSelectedItemIndex)
     }
-    Row(
-        horizontalArrangement = Arrangement.SpaceAround,
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier
-            .fillMaxWidth()
-        //.fillMaxHeight()
-        //   .background(DeepBlue)
-        //.padding(15.dp)
+
+
+    BottomNavigation(
+        backgroundColor = Color.Magenta,
+        modifier = modifier.fillMaxWidth()
+
+            .clip(RoundedCornerShape(15.dp, 15.dp, 0.dp, 0.dp))
     ) {
         item.forEachIndexed { index, item ->
             BottomMenuItem(
                 item = item,
                 isSelected = index == selectedItemIndex,
-                //      activeHighLightColor = activeHighLightColor,
-                //      activeTextColor = activeTextColor,
-                //      inactiveTextColor = inactiveTextColor
+
             ) {
                 selectedItemIndex = index
             }
@@ -430,21 +436,21 @@ fun BottomMenuItem(
 
         Box(
             contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .clip(RoundedCornerShape(10.dp))
-                .background(if (isSelected) activeHighLightColor else Color.Transparent)
+            modifier = Modifier.padding(10.dp)
+
+              //  .background(if (isSelected) activeHighLightColor else Color.Transparent)
+
+                .height(70.dp)
         ) {
             Icon(
                 painter = painterResource(id = item.image),
                 contentDescription = item.title,
                 tint = if (isSelected) activeTextColor else inactiveTextColor,
-                modifier = Modifier.size(27.dp)
+                modifier = Modifier.size(33.dp)
+
             )
         }
-        Text(
-            text = item.title,
-            color = if (isSelected) activeTextColor else inactiveTextColor
-        )
+
     }
 
 }

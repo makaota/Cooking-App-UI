@@ -54,5 +54,12 @@ val Typography = Typography(
         fontFamily = montserrat,
         fontWeight = FontWeight.ExtraBold,
         fontSize = 18.sp
+    ),
+
+    h5 = TextStyle(
+        color = Color.White,
+        fontFamily = montserrat,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 13.sp
     )
 )
